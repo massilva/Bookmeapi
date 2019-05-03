@@ -1,8 +1,25 @@
-FROM python:3.6.2
+FROM debian:stable
+
+ENV LANG C.UTF-8
 ENV PYTHONUNBUFFERED 1
 
+RUN apt-get update && apt-get install -y \
+    git \
+    virtualenv \
+    python3-dev \
+    build-essential \
+    libgeos-c1v5 \
+    libpq-dev \
+    libproj-dev \
+    libfreexl-dev \
+    libgdal-dev \
+    gdal-bin\
+    python3-pip
+
+#FROM python:3.6.2
+
 # update package lists, fix broken system packages
-RUN apt-get update
+#RUN apt-get update -y
 RUN apt-get -f install
 
 # install and cache dependencies in /tmp directory.

@@ -15,11 +15,15 @@ services:
     labels:
       com.example.service: "es"
       com.example.description: "For searching and indexing data"
-    image: elasticsearch:5.4
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.0.0 #elasticsearch:5.4
     container_name: bookme_es
+    environment:
+      - "ELASTIC_PASSWORD=changeme"
+      - "http.host=0.0.0.0"
+      - "transport.host=127.0.0.1"
     volumes:
       - type: volume
-        source: esdata
+        source: esdata1
         target: /usr/share/elasticsearch/data/
     ports:
       - "9200:9200"
@@ -27,7 +31,7 @@ services:
     labels:
       com.example.service: "kibana"
       com.example.description: "Data visualisation and for log aggregation"
-    image: kibana:5.4.3
+    image: docker.elastic.co/kibana/kibana:7.0.0 #kibana:5.4.3
     container_name: bookme_kibana
     ports:
       - "5601:5601"
@@ -35,6 +39,9 @@ services:
       - ELASTICSEARCH_URL=http://es:9200
     depends_on:
       - es
+    volumes:
+      - "./kibana.yml:/usr/share/kibana/config/kibana.yml"
+
   logstash:
     labels:
       com.example.service: "logstash"
@@ -74,4 +81,4 @@ services:
 
 volumes:
   dbdata:
-  esdata:
+  esdata1:

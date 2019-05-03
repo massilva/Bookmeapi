@@ -2,7 +2,7 @@
 
 # wait for Postgres to start
 function postgres_ready() {
-python << END
+python3 << END
 import sys
 import psycopg2
 try:
